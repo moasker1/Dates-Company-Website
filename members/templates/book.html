@@ -1,0 +1,32 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+    المنتج
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/book.css' %}" >
+<body bgcolor="#292929">
+    <header>
+        <a href="/"><i class="fa-regular fa-circle-left"></i></a>
+        <h1> اَلطَّاقَة اَلْمَاسَّةِ لِلتُّمُورِ</h1>
+    </header>
+    <center>
+    <section class="contianer">
+        <div class="discription">
+          <h2 id="book-name">{{ product.name }}</h2><br>
+          <h3>التصنيف: <span id="category">{{ product.category }}</span></h3>
+          <h3> السعر : <span id="author-name">{{ product.price }}</span></h3>
+
+          <p id="book-discription"> {{ product.brief }} </p>
+          <a href="https://wa.me/01010764450" >عمل طلبية</a>
+        </div>
+        <div class="book">
+           <img src="{{ product.image.url }}" alt="book cover">
+        </div>
+    </section>
+    </center>
+
+{% endblock %}

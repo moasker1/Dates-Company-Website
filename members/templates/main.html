@@ -1,0 +1,109 @@
+{% extends "master.html" %}
+{% load static %}
+
+
+{% block title %}
+الطاقة الماسة 
+{% endblock %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+<body bgcolor="#292929">
+    <!-- Starting Header -->
+    <header>
+        <h1>اَلطَّاقَة اَلْمَاسَّةِ لِلتُّمُورِ</h1>
+        <div class="nav">
+            {% if not Name %}
+                <a href="/register">Sign Up</a>
+                <a href="/login">Login</a>
+            {% else %}
+                <select id="type" name="forma" onchange="location = this.value;"> 
+                    <option value="">{{ Name }}</option>
+                    {% comment %} <option value="/myaccount">My Account</option> {% endcomment %}
+                    <option value="/logout">Log out</option>
+                </select>
+            {% endif %} 
+            <a href="#space">Contact Us</a>
+        </div>
+        
+    </header>
+
+    <!-- Starting Landscape & filter -->
+    <form method="post" id="task-form">
+        {% csrf_token %}
+        <section class="landscape">
+            <p>بَيْتٌ لَا تَمْرَ فِيهِ جِيَاعٌ أَهْلُهُ</p><br>
+            <div class="search">
+                <input type="search" name ="name" id="text" placeholder="ابحث عن منتج">
+                <button type="submit" class="btn" id="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>        
+        </section>
+    </form>
+    <form method="post" id="task-form">
+        {% csrf_token %}
+        <section class="filter">
+            <input type="search" name ="author" id="author" placeholder="تمور">
+            <button type="submit" id="filter-submit">filter</button>
+        </section>
+    </form>
+
+    <!-- Show Books -->
+    <h2>  _____  منتجــــــــــــاتنا   _____ </h2>
+    <section class="pagecontent container">
+        {% if products %}
+            {% for product in products %}
+                    <div class="bookcard" onclick= "location.href='/product?product={{ product.pk }}'">
+                            <img src= "{{ product.image.url }}" alt="">
+                            <p>{{ product.name }} - {{ product.category }}</p>
+
+                            <p></p>
+
+                            <p>{{ product.brief }}</p>
+
+                            <div class="price">
+                            <span>{{product.price}} </span>
+                            </div>
+                    </div>
+            {% endfor %}
+        {% else %}
+            <h2>
+                لا يوجد هذا المنتج حتي الان .. حاول البحث عن منتج اخر.
+            </h2>
+        {% endif %}
+    </section>
+
+
+<section class="pagecontent container">
+    <span>
+        {% if products.has_previous %}
+            <a style="padding: 8px 16px;text-decoration: none;" id="filter-submit" href="?page={{ products.previous_page_number }}">prev</a>
+        {% endif %}
+        
+        <span style="padding: 8px 16px;text-decoration: none;font-size:20px;color: #ffa31a;">
+            {% if products.number %} 
+                Page {{ products.number }} of {{ products.paginator.num_pages }} 
+            {% endif %}
+        </span>
+
+        {% if products.has_next %}
+            <a style="padding: 8px 16px;text-decoration: none;" id="filter-submit" href="?page={{ products.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</section>
+
+
+    <!-- Starting Footer -->
+    <footer>
+        <div class="space" id="space">
+            <p>you can Contact us from:</p>
+           <a href="https://www.instagram.com/" target="_blank" ><i class='fa-brands fa-instagram'></i></a>
+           <a href="https://web.facebook.com/pages/category/local-services/%D9%85%D8%B5%D9%86%D8%B9-%D8%A7%D9%84%D8%B7%D8%A7%D9%82%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D8%B3%D8%A9-%D9%84%D9%84%D8%AA%D9%85%D9%88%D8%B1-104832037985896/?_rdc=1&_rdr" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+           <a href="https://www.twitter.com/" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+           <a href="https://wa.me/01010764450" target="_blank"><i class="fa-brands fa-whatsapp"></i></i></a>
+        </div>
+    </footer>
+
+{% endblock %}
